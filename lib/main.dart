@@ -51,7 +51,7 @@ class _MyPageState extends State<MyPage> {
     var textReactifs = reactifs.text;
     var textProduits = produits.text;
 
-    diffReactifs = textReactifs.split('+');
+    diffReactifs = textReactifs.split('+/');
     diffProduits = textProduits.split('+');
 
     var atomesReactifsTotal =
