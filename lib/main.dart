@@ -51,7 +51,7 @@ class _MyPageState extends State<MyPage> {
     var textReactifs = reactifs.text;
     var textProduits = produits.text;
 
-    diffReactifs = textReactifs.split('+/');
+    diffReactifs = textReactifs.split('+');
     diffProduits = textProduits.split('+');
 
     var atomesReactifsTotal =
@@ -79,8 +79,19 @@ class _MyPageState extends State<MyPage> {
     Atome.CreerMatrice(atomesReactifsTotal, nbReactifsTotal,
         atomesProduitsTotal, nbProduitsTotal, matrix);
 
-    final c = Matrix(matrix);
-    print(c);
+    final mat = Matrix(matrix);
+    print(mat);
+
+    double a;
+    double b;
+    double c;
+    double d;
+
+    for (int i = 0; i < matrix.length; i++) {
+      for (int j = 0; j < diffReactifs.length; j++) {
+        if (matrix[i][j] != 0) {}
+      }
+    }
 
     if (matrix.length == matrix[0].length) {
       Atome.ResoudreMatrice(matrix);
@@ -96,7 +107,7 @@ class _MyPageState extends State<MyPage> {
     }
 
     if (nbZeros == matrix[taille - 1].length) {
-      print(c);
+      print(mat);
     }*/
   }
 
