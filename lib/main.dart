@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:testing/imdumb.dart';
 import 'package:extended_math/extended_math.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -30,6 +32,8 @@ class _MyPageState extends State<MyPage> {
   final reactifs = TextEditingController();
   final produits = TextEditingController();
 
+  String solution_finale = "Solution:";
+
   @override
   void dispose() {
     reactifs.dispose();
@@ -44,7 +48,7 @@ class _MyPageState extends State<MyPage> {
     return double.parse(s, (e) => null) != null;
   }
 
-  void solution() {
+  void solution() async {
     List diffReactifs = new List();
     List diffProduits = new List();
 
@@ -82,33 +86,88 @@ class _MyPageState extends State<MyPage> {
     final mat = Matrix(matrix);
     print(mat);
 
-    double a;
-    double b;
-    double c;
-    double d;
+    String url = "http://vps.benliam12.net:8000/";
+    Map<String, String> headers = {"Content-type": "application/json"};
 
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < diffReactifs.length; j++) {
-        if (matrix[i][j] != 0) {}
+    String json = jsonEncode(matrix);
+
+    http.Response response = await http.post(url, headers: headers, body: json);
+    int statusCode = response.statusCode;
+    String body = response.body;
+    print('$body - $statusCode');
+
+    String newbody = body.replaceAll('{', '').replaceAll('}', '');
+
+    var firstSplit = newbody.split(', ');
+    var secondsplit = {};
+
+    for (var i = 0; i < firstSplit.length; i++) {
+      var t = firstSplit[i].split(':');
+      var letter = t[0].replaceAll('"', '');
+      var answer = t[1].replaceAll('"', '');
+      secondsplit[letter] = answer;
+    }
+
+    var alp = "a".codeUnitAt(0);
+    var alp_end = "z".codeUnitAt(0);
+
+    while (alp <= alp_end) {
+      var letter = new String.fromCharCode(alp);
+      if (!secondsplit.containsKey(letter)) {
+        break;
+      }
+      alp++;
+    }
+
+    var listValeurs = {};
+    var alp2 = "a".codeUnitAt(0);
+
+    for (alp2 = "a".codeUnitAt(0); alp2 < alp; alp2++) {
+      var let = new String.fromCharCode(alp);
+      var curLet = new String.fromCharCode(alp2);
+      listValeurs[curLet] = double.parse(
+          secondsplit[curLet].replaceAll("*$let", '').replaceAll(" $let", '1'));
+    }
+
+    print(new String.fromCharCode(alp));
+
+    double valMin = 100.0;
+    var let2 = new String.fromCharCode(alp);
+    listValeurs[let2] = 1.0;
+
+    for (alp2 = "a".codeUnitAt(0); alp2 <= alp; alp2++) {
+      var curLet = new String.fromCharCode(alp2);
+      if (listValeurs[curLet] < valMin) {
+        valMin = listValeurs[curLet];
       }
     }
 
-    if (matrix.length == matrix[0].length) {
-      Atome.ResoudreMatrice(matrix);
+    for (alp2 = "a".codeUnitAt(0); alp2 <= alp; alp2++) {
+      var curLet = new String.fromCharCode(alp2);
+      listValeurs[curLet] *= (1 / valMin);
+      listValeurs[curLet] = listValeurs[curLet].round();
+      //print(listValeurs[curLet]);
     }
 
-    /*int taille = matrix.length;
-    int nbZeros = 0;
-
-    for (int j = 0; j < matrix[0].length; j++) {
-      if (matrix[taille - 1][j] == 0) {
-        nbZeros++;
+    setState(() {
+      solution_finale = "Solution: ";
+      var list = listValeurs.values.toList();
+      for (int i = 0; i < diffReactifs.length; i++) {
+        if (list[i] != 1) {
+          solution_finale += list[i].toString();
+        }
+        solution_finale += diffReactifs[i];
+        if ((i + 1) < diffReactifs.length) solution_finale += " + ";
       }
-    }
-
-    if (nbZeros == matrix[taille - 1].length) {
-      print(mat);
-    }*/
+      solution_finale += " -> ";
+      for (int i = 0; i < diffProduits.length; i++) {
+        if (list[i + diffReactifs.length] != 1) {
+          solution_finale += list[i + diffReactifs.length].toString();
+        }
+        solution_finale += diffProduits[i];
+        if ((i + 1) < diffProduits.length) solution_finale += " + ";
+      }
+    });
   }
 
   @override
@@ -186,7 +245,7 @@ class _MyPageState extends State<MyPage> {
             Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Solution:'),
+                child: Text(solution_finale),
               ),
             ),
           ],
