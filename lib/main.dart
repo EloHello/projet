@@ -5,6 +5,7 @@ import 'package:testing/imdumb.dart';
 import 'package:extended_math/extended_math.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,6 +56,7 @@ class _MyPageState extends State<MyPage> {
     var textReactifs = reactifs.text;
     var textProduits = produits.text;
 
+    //split text dans les cases
     diffReactifs = textReactifs.split('+');
     diffProduits = textProduits.split('+');
 
@@ -63,21 +65,63 @@ class _MyPageState extends State<MyPage> {
     var nbReactifsTotal =
         new List.generate(diffReactifs.length, (_) => new List<int>());
 
-    for (int i = 0; i < diffReactifs.length; i++) {
-      Atome.fonctionTest(
-          atomesReactifsTotal[i], nbReactifsTotal[i], diffReactifs[i]);
-    }
-
     var atomesProduitsTotal =
         new List.generate(diffProduits.length, (_) => new List());
     var nbProduitsTotal =
         new List.generate(diffProduits.length, (_) => new List<int>());
+
+    //vefif pour texte vide et caractères autres
+    RegExp exp = new RegExp(r"[^A-Za-z0-9\+]");
+    bool isLegit = !exp.hasMatch(textReactifs);
+    bool isLegit2 = !exp.hasMatch(textProduits);
+    if (!isLegit ||
+        textReactifs.toString().isEmpty ||
+        !isLegit2 ||
+        textProduits.toString().isEmpty) {
+      print("fuck u");
+      return;
+    }
+
+    //split les atomes
+    for (int i = 0; i < diffReactifs.length; i++) {
+      Atome.fonctionTest(
+          atomesReactifsTotal[i], nbReactifsTotal[i], diffReactifs[i]);
+    }
 
     for (int i = 0; i < diffProduits.length; i++) {
       Atome.fonctionTest(
           atomesProduitsTotal[i], nbProduitsTotal[i], diffProduits[i]);
     }
 
+    //vérif si atomes réactifs sont dans les produits
+    var list1 = List<String>();
+    for (int i = 0; i < atomesReactifsTotal.length; i++) {
+      for (int j = 0; j < atomesReactifsTotal[i].length; j++) {
+        list1.add(atomesReactifsTotal[i][j]);
+      }
+    }
+    var list2 = List<String>();
+    for (int i = 0; i < atomesProduitsTotal.length; i++) {
+      for (int j = 0; j < atomesProduitsTotal[i].length; j++) {
+        list2.add(atomesProduitsTotal[i][j]);
+      }
+    }
+
+    bool allo = true;
+    for (int i = 0; i < list1.length; i++) {
+      if (!list2.contains(list1[i])) {
+        allo = false;
+      }
+    }
+
+    if (!allo) {
+      print("fuckk u");
+      return;
+    } else {
+      print("hola");
+    }
+
+    //mettre atomes dans une matrice
     List<List<double>> matrix = new List<List<double>>();
 
     Atome.CreerMatrice(atomesReactifsTotal, nbReactifsTotal,
@@ -86,6 +130,7 @@ class _MyPageState extends State<MyPage> {
     final mat = Matrix(matrix);
     print(mat);
 
+    //résoudre la matrice
     String url = "http://vps.benliam12.net:8000/";
     Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -96,6 +141,7 @@ class _MyPageState extends State<MyPage> {
     String body = response.body;
     print('$body - $statusCode');
 
+    //trouver les coefficients
     String newbody = body.replaceAll('{', '').replaceAll('}', '');
 
     var firstSplit = newbody.split(', ');
@@ -146,9 +192,9 @@ class _MyPageState extends State<MyPage> {
       var curLet = new String.fromCharCode(alp2);
       listValeurs[curLet] *= (1 / valMin);
       listValeurs[curLet] = listValeurs[curLet].round();
-      //print(listValeurs[curLet]);
     }
 
+    //afficher la solution
     setState(() {
       solution_finale = "Solution: ";
       var list = listValeurs.values.toList();

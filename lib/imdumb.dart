@@ -9,7 +9,6 @@ class Atome {
   }
 
 //chiffre à 2 chiffres
-//autre chose que chiffre et lettre
 //parenthèse
 
   static void fonctionTest(List atome, List nb, var text) {
