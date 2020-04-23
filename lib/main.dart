@@ -6,6 +6,7 @@ import 'package:extended_math/extended_math.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:testing/imfat.dart';
 
 void main() => runApp(MyApp());
 
@@ -216,11 +217,24 @@ class _MyPageState extends State<MyPage> {
     });
   }
 
+  void killMe(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Modeles()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: () => killMe(context),
+          )
+        ],
         title: Text(
           "Calculatrice de stoechiométrie",
           style: TextStyle(color: Colors.white),
