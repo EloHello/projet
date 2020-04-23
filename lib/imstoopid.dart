@@ -6,7 +6,7 @@ class GrosModeles extends StatelessWidget {
   GrosModeles({Key key, this.id}) : super(key: key);
   var nom = [
     "Plum Pudding",
-    "Normal",
+    "Magnésium",
     "Orbitales",
   ];
   @override
@@ -18,7 +18,7 @@ class GrosModeles extends StatelessWidget {
       body: new Center(
         child: new Object3D(
           size: const Size(400.0, 400.0),
-          path: "assets/plumpudding.obj",
+          path: "assets/modele1.obj",
           asset: true,
         ),
       ),
