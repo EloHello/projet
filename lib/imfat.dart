@@ -10,7 +10,7 @@ class Modeles extends StatefulWidget {
 class _ModelesState extends State<Modeles> {
   var nom = [
     "Plum Pudding",
-    "Normal",
+    "Magnésium",
     "Orbitales",
   ];
   @override

@@ -168,4 +168,78 @@ class Atome {
       }
     }
   }
+
+  static void fonctionTest2(List atome, List nb, var text) {
+    int t = 1000;
+    int tfin = 0;
+
+    for (int i = 0; i < text.length; i++) {
+      if (i < t && i > tfin) {
+        if (isNumeric(text[i]) == false) {
+          //si pas un chiffre
+
+          if (text[i] == "(") {
+            t = i;
+            while (!isNumeric(text[i])) {
+              if (text[i + 1] == text[i + 1].toUpperCase()) {
+                if (text[i + 2] == text[i + 2].toUpperCase()) {
+                  atome.add(text[i + 1]);
+                } else {
+                  atome.add(text[i + 1] + text[i + 2]);
+                }
+              }
+              i++;
+            }
+            tfin = i;
+            int nbatomes = i - t;
+            for (int j = 0; j < nbatomes; j++) {
+              nb.add(int.parse(text[i]));
+            }
+          }
+
+          if (text[i] == text[i].toUpperCase()) {
+            //si maj
+            if (text.length > i + 1) {
+              //si prochain existe
+              if (isNumeric(text[i + 1])) {
+                //si prochain est chiffre
+                atome.add(text[i]);
+                nb.add(int.parse(text[i + 1]));
+              } else if (text[i + 1] == text[i + 1].toUpperCase()) {
+                //si prochain est maj
+                atome.add(text[i]);
+                nb.add(1);
+              } else if (text[i + 1] != text[i + 1].toUpperCase()) {
+                //si prochain pas maj
+                if (text.length > i + 2) {
+                  //si 2 prochain existe
+                  if (isNumeric(text[i + 2])) {
+                    //si 2 prochain est chiffre
+                    atome.add(text[i] + text[i + 1]);
+                    nb.add(int.parse(text[i + 2]));
+                  } else {
+                    //si 2 prochain pas un chiffre
+                    atome.add(text[i] + text[i + 1]);
+                    nb.add(1);
+                  }
+                } else {
+                  //si 2 prochain existe pas
+                  atome.add(text[i] + text[i + 1]);
+                  nb.add(1);
+                }
+              } else if (text[i + 1] == text[i + 1].toUpperCase()) {
+                //si prochain maj
+                atome.add(text[i]);
+                nb.add(1);
+              }
+            } else {
+              //si prochain existe pas
+              atome.add(text[i]);
+              nb.add(1);
+            }
+          }
+        }
+      }
+    }
+  }
 }

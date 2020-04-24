@@ -72,7 +72,7 @@ class _MyPageState extends State<MyPage> {
         new List.generate(diffProduits.length, (_) => new List<int>());
 
     //vefif pour texte vide et caractères autres
-    RegExp exp = new RegExp(r"[^A-Za-z0-9\+]");
+    RegExp exp = new RegExp(r"[^A-Za-z0-9\+()]");
     bool isLegit = !exp.hasMatch(textReactifs);
     bool isLegit2 = !exp.hasMatch(textProduits);
     if (!isLegit ||
@@ -206,7 +206,7 @@ class _MyPageState extends State<MyPage> {
         solution_finale += diffReactifs[i];
         if ((i + 1) < diffReactifs.length) solution_finale += " + ";
       }
-      solution_finale += " -> ";
+      solution_finale += " → ";
       for (int i = 0; i < diffProduits.length; i++) {
         if (list[i + diffReactifs.length] != 1) {
           solution_finale += list[i + diffReactifs.length].toString();
