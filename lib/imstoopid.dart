@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_obj/flutter_3d_obj.dart';
+import 'package:flutter_cube/flutter_cube.dart';
 
 class GrosModeles extends StatelessWidget {
   final int id;
@@ -10,9 +11,9 @@ class GrosModeles extends StatelessWidget {
     "Orbitales (Krypton, 1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6)",
   ];
   var nomModele = [
-    "assets/modele1.obj",
-    "assets/modele2.obj",
-    "assets/modele3.obj",
+    "assets/plumpudding.gif",
+    "assets/rutherford.gif",
+    "assets/orbitales.gif",
   ];
   @override
   Widget build(BuildContext context) {
@@ -20,13 +21,7 @@ class GrosModeles extends StatelessWidget {
       appBar: AppBar(
         title: Text(this.nom[id]),
       ),
-      body: new Center(
-        child: new Object3D(
-          size: const Size(400.0, 400.0),
-          path: this.nomModele[id],
-          asset: true,
-        ),
-      ),
+      body: new Center(child: new Image(image: AssetImage(this.nomModele[id]))),
     ));
   }
 }

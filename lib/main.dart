@@ -128,6 +128,10 @@ class _MyPageState extends State<MyPage> {
     Atome.CreerMatrice(atomesReactifsTotal, nbReactifsTotal,
         atomesProduitsTotal, nbProduitsTotal, matrix);
 
+    List<double> imaho = new List<double>();
+    imaho.add(diffReactifs.length.toDouble());
+    matrix.add(imaho);
+
     final mat = Matrix(matrix);
     print(mat);
 
