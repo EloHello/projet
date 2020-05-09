@@ -50,7 +50,23 @@ class _MyPageState extends State<MyPage> {
     return double.parse(s, (e) => null) != null;
   }
 
-  void solution() async {
+  void showMessageErreur(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("ATTENTION... ERREUR !!!"),
+            content: Text(
+                "L'équation est n'est pas bonne. Révisez l'écriture. Si tout est bien écrit, l'équation n'a pas de solution."),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () => Navigator.pop(context), child: Text("ok"))
+            ],
+          );
+        });
+  }
+
+  void solution(BuildContext context) async {
     List diffReactifs = new List();
     List diffProduits = new List();
 
@@ -80,18 +96,24 @@ class _MyPageState extends State<MyPage> {
         !isLegit2 ||
         textProduits.toString().isEmpty) {
       print("fuck u");
+      showMessageErreur(context);
       return;
     }
 
-    //split les atomes
-    for (int i = 0; i < diffReactifs.length; i++) {
-      Atome.fonctionTest(
-          atomesReactifsTotal[i], nbReactifsTotal[i], diffReactifs[i]);
-    }
+    try {
+      //split les atomes
+      for (int i = 0; i < diffReactifs.length; i++) {
+        Atome.fonctionTest2(
+            atomesReactifsTotal[i], nbReactifsTotal[i], diffReactifs[i]);
+      }
 
-    for (int i = 0; i < diffProduits.length; i++) {
-      Atome.fonctionTest(
-          atomesProduitsTotal[i], nbProduitsTotal[i], diffProduits[i]);
+      for (int i = 0; i < diffProduits.length; i++) {
+        Atome.fonctionTest2(
+            atomesProduitsTotal[i], nbProduitsTotal[i], diffProduits[i]);
+      }
+    } catch (e) {
+      showMessageErreur(context);
+      return;
     }
 
     //vérif si atomes réactifs sont dans les produits
@@ -117,9 +139,8 @@ class _MyPageState extends State<MyPage> {
 
     if (!allo) {
       print("fuckk u");
+      showMessageErreur(context);
       return;
-    } else {
-      print("hola");
     }
 
     //mettre atomes dans une matrice
@@ -134,6 +155,11 @@ class _MyPageState extends State<MyPage> {
 
     final mat = Matrix(matrix);
     print(mat);
+
+    if (matrix.length == 1) {
+      showMessageErreur(context);
+      return;
+    }
 
     //résoudre la matrice
     String url = "http://vps.benliam12.net:8000/";
@@ -303,7 +329,7 @@ class _MyPageState extends State<MyPage> {
                   padding: new EdgeInsets.all(5.0),
                   child: Text('OK'),
                   onPressed: () {
-                    solution();
+                    solution(context);
                   }),
             ),
             Expanded(
