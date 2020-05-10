@@ -266,24 +266,41 @@ class _MyPageState extends State<MyPage> {
           )
         ],
         title: Text(
-          "Calculatrice de stoechiométrie",
+          "Balancement d'équation",
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: Container(
-        height: MediaQuery.of(context).copyWith().size.height / 3,
+        height: MediaQuery.of(context).copyWith().size.height / 1,
         color: Colors.white,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
+              flex: 1,
               child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Text('Entrez l\'équation à balancer'),
+                padding: EdgeInsets.all(25.0),
+                child: Text('Entrez l\'équation à balancer',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
             ),
             Expanded(
+              flex: 3,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    "Sur la ligne de gauche, entrez les réactifs non-balancés. Sur la ligne de droite, faites de même avec les produits. Les molécules doivent commencer par une lettre majuscule et les indices sont entrés après les atomes. Les parenthèses sont acceptées. Le traitement des ions n'est pas disponible.",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic,
+                    )),
+              ),
+            ),
+            Expanded(
+              flex: 2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -293,7 +310,7 @@ class _MyPageState extends State<MyPage> {
                       controller: reactifs,
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
-                        hintText: '1',
+                        hintText: 'N2 + H2',
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -311,7 +328,7 @@ class _MyPageState extends State<MyPage> {
                       controller: produits,
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
-                        hintText: '2',
+                        hintText: 'NH3',
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -325,17 +342,31 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
             Expanded(
-              child: RaisedButton(
-                  padding: new EdgeInsets.all(5.0),
-                  child: Text('OK'),
-                  onPressed: () {
-                    solution(context);
-                  }),
-            ),
+                flex: 2,
+                child: ButtonTheme(
+                    minWidth: 400.0,
+                    height: 50.0,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: RaisedButton(
+                          padding: new EdgeInsets.all(5.0),
+                          child: Text('OK',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          color: Colors.pink,
+                          onPressed: () {
+                            solution(context);
+                          }),
+                    ))),
             Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(solution_finale),
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(solution_finale,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold))),
               ),
             ),
           ],

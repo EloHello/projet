@@ -6,7 +6,7 @@ class GrosModeles extends StatelessWidget {
   final int id;
   GrosModeles({Key key, this.id}) : super(key: key);
   var nom = [
-    "Plum Pudding",
+    "Modèle du 'Plum Pudding' (Thompson)",
     "Modèle de Rutherford (Magnésium)",
     "Orbitales (Krypton, 1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6)",
   ];

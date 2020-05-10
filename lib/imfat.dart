@@ -17,10 +17,13 @@ class _ModelesState extends State<Modeles> {
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
-        title: Text("Choix modèles"),
+        title: Text("Modèles atomiques"),
       ),
       body: Container(
-          child: ListView.builder(
+          child: ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+          color: Colors.white,
+        ),
         itemCount: 3,
         itemBuilder: (context, index) {
           return SuperBouton(title: nom[index], id: index);
