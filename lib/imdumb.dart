@@ -14,6 +14,32 @@ class Atome {
     for (int i = 0; i < text.length; i++) {
       if (isNumeric(text[i]) == false) {
         //si pas un chiffre
+
+        if (text[i] == "(") {
+          if (text[i + 1] == text[i + 1].toUpperCase()) {
+            //si maj
+            if (text[i + 2] == text[i + 2].toUpperCase()) {
+              //si prochain maj
+              atome.add(text[i + 1]);
+              atome.add(text[i + 2]);
+              if (text.length > i + 4) {
+                nb.add(int.parse(text[i + 4]));
+                nb.add(int.parse(text[i + 4]));
+              } else {
+                nb.add(1);
+              }
+            } else {
+              //si maj et min
+              atome.add(text[i + 1] + text[i + 2]);
+              if (text.length > i + 4) {
+                nb.add(int.parse(text[i + 4]));
+              } else {
+                nb.add(1);
+              }
+            }
+          }
+        }
+
         if (text[i] == text[i].toUpperCase()) {
           //si maj
           if (text.length > i + 1) {
@@ -210,10 +236,10 @@ class Atome {
                 if (isNumeric(text[i + 2])) {
                   //si 2 prochains est chiffre
                   nb.add(int.parse(text[i + 1] + text[i + 2]));
-                } else {
-                  //sinon
-                  nb.add(int.parse(text[i + 1]));
                 }
+              } else {
+                //sinon
+                nb.add(int.parse(text[i + 1]));
               }
             } else if (text[i + 1] == text[i + 1].toUpperCase()) {
               //si prochain est maj
@@ -230,10 +256,10 @@ class Atome {
                     if (isNumeric(text[i + 3])) {
                       //si 3 prochain est chiffre
                       nb.add(int.parse(text[i + 2] + text[i + 3]));
-                    } else {
-                      //sinon
-                      nb.add(int.parse(text[i + 2]));
                     }
+                  } else {
+                    //sinon
+                    nb.add(int.parse(text[i + 2]));
                   }
 
                   nb.add(int.parse(text[i + 2]));

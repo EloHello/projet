@@ -103,17 +103,30 @@ class _MyPageState extends State<MyPage> {
     try {
       //split les atomes
       for (int i = 0; i < diffReactifs.length; i++) {
-        Atome.fonctionTest2(
+        Atome.fonctionTest(
             atomesReactifsTotal[i], nbReactifsTotal[i], diffReactifs[i]);
       }
 
       for (int i = 0; i < diffProduits.length; i++) {
-        Atome.fonctionTest2(
+        Atome.fonctionTest(
             atomesProduitsTotal[i], nbProduitsTotal[i], diffProduits[i]);
       }
     } catch (e) {
       showMessageErreur(context);
       return;
+    }
+
+    for (int i = 0; i < atomesReactifsTotal.length; i++) {
+      for (int j = 0; j < atomesReactifsTotal[i].length; j++) {
+        print(atomesReactifsTotal[i][j]);
+        print(nbReactifsTotal[i][j]);
+      }
+    }
+    for (int i = 0; i < atomesProduitsTotal.length; i++) {
+      for (int j = 0; j < atomesProduitsTotal[i].length; j++) {
+        print(atomesProduitsTotal[i][j]);
+        print(nbProduitsTotal[i][j]);
+      }
     }
 
     //vérif si atomes réactifs sont dans les produits
@@ -199,11 +212,17 @@ class _MyPageState extends State<MyPage> {
     var listValeurs = {};
     var alp2 = "a".codeUnitAt(0);
 
-    for (alp2 = "a".codeUnitAt(0); alp2 < alp; alp2++) {
-      var let = new String.fromCharCode(alp);
-      var curLet = new String.fromCharCode(alp2);
-      listValeurs[curLet] = double.parse(
-          secondsplit[curLet].replaceAll("*$let", '').replaceAll(" $let", '1'));
+    try {
+      for (alp2 = "a".codeUnitAt(0); alp2 < alp; alp2++) {
+        var let = new String.fromCharCode(alp);
+        var curLet = new String.fromCharCode(alp2);
+        listValeurs[curLet] = double.parse(secondsplit[curLet]
+            .replaceAll("*$let", '')
+            .replaceAll(" $let", '1'));
+      }
+    } catch (e) {
+      showMessageErreur(context);
+      return;
     }
 
     print(new String.fromCharCode(alp));
@@ -221,7 +240,9 @@ class _MyPageState extends State<MyPage> {
 
     for (alp2 = "a".codeUnitAt(0); alp2 <= alp; alp2++) {
       var curLet = new String.fromCharCode(alp2);
-      listValeurs[curLet] *= (1 / valMin);
+      if (valMin != 0) {
+        listValeurs[curLet] *= (1 / valMin);
+      }
       listValeurs[curLet] = listValeurs[curLet].round();
     }
 
